@@ -5,7 +5,8 @@ URL = http://www.pythonchallenge.com/pc/def/peak.html
 
 import pickle
 
-banner = pickle.load(open('banner.p', 'rb'))
+banner = pickle.load(open('./data/banner.p', 'rb'))
+print(banner)
 
 for row in banner:
     for col in row:
