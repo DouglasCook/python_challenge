@@ -4,26 +4,28 @@ URL = http://www.pythonchallenge.com/pc/def/channel.html
 """
 
 import os
+import zipfile
 
 next_one = 90052
-id_list = []
+comments = []
 fdir = './data/channel/{}.txt'
 fpath = fdir.format(next_one)
 
-while True:
-    # read from next file
-    with open(fpath) as f:
-        text = f.read()
-        #print(text)
-        next_one = text.split()[-1]
+# open the zip file to access comments
+with zipfile.ZipFile('./data/channel.zip', 'r') as zf:
 
-        fpath = fdir.format(next_one)
-        # if there is no such file then break out of loop
-        if not os.path.isfile(fpath):
-            break
+    while True:
+        # collect comment for this file
+        comments.append(zf.getinfo('{}.txt'.format(next_one)).comment)
 
-        # add to list to play around with
-        id_list.append(next_one)
+        # read from next file
+        with open(fpath) as f:
+            text = f.read()
+            next_one = text.split()[-1]
 
-print(len(id_list))
-print(id_list)
+            fpath = fdir.format(next_one)
+            # if there is no such file then break out of loop
+            if not os.path.isfile(fpath):
+                break
+
+print(''.join(comments))
